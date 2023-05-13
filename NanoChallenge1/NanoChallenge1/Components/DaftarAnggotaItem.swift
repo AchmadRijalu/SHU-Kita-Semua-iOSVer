@@ -10,26 +10,38 @@ import SwiftUI
 struct DaftarAnggotaItem: View {
     
     @State private var editDataAnggotaShowSheet:Bool = false
-
-    @State var daftarAnggotaItem:AnggotaModel
-    @State var tambahAnggotaDataSaved : [AnggotaModel]
+    
+    @Binding var daftarAnggotaItem:AnggotaModel
+    @Binding var tambahAnggotaDataSaved : [AnggotaModel]
+    
+    
+    static let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "id_ID")
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = "Rp "
+        return formatter
+    }()
+    
+    
+    
     var body: some View {
         
         VStack{
             HStack{
-//                VStack{
-//                    //                    Image(systemName: "person.fill")
-//                }.padding(.all,9).frame(width: 12, height: 12).background(.black).cornerRadius(50)
+                //                VStack{
+                //                    //                    Image(systemName: "person.fill")
+                //                }.padding(.all,9).frame(width: 12, height: 12).background(.black).cornerRadius(50)
                 
                 VStack(alignment: .leading){
                     Text(daftarAnggotaItem.name).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
                         Text("Pembelian :").fontWeight(.medium)
-                        Text("Rp. \(String(daftarAnggotaItem.pembelian))")
+                        Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.pembelian)) ?? "")")
                     }
                     HStack{
                         Text("Simpanan :").fontWeight(.medium)
-                        Text("Rp. \(String(daftarAnggotaItem.simpanan))")
+                        Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.simpanan)) ?? "")")
                     }
                 }.padding(.leading, 8)
                 Spacer()
@@ -50,7 +62,7 @@ struct DaftarAnggotaItem: View {
 struct UbahAnggotaSheet: View {
     
     @Environment(\.presentationMode) var presentationMode
-    @Binding var ubahAnggotaData:AnggotaModel
+    @Binding var ubahAnggotaData:AnggotaModel //a
     @Binding var tambahAnggotaDataSaved: [AnggotaModel]
     var body: some View {
         
@@ -86,15 +98,13 @@ struct UbahAnggotaSheet: View {
                 }).foregroundColor(Color("PrimaryColor")))
                 .navigationBarItems(trailing: Button("Ubah",
                                                      action: {
-
+                    
                     if let index = tambahAnggotaDataSaved.firstIndex(where: {$0.id == ubahAnggotaData.id}) {
                         tambahAnggotaDataSaved[index] = ubahAnggotaData
-                    
+                        
                     }
                     //save to local user default
                     UserDefaults.standard.storeCodable(tambahAnggotaDataSaved, key: "anggotaUserDefaultKey")
-
-                    print(tambahAnggotaDataSaved)
                     presentationMode.wrappedValue.dismiss()
                 }).foregroundColor(Color("PrimaryColor")) )
         }
@@ -111,6 +121,6 @@ struct DaftarAnggotaItem_Previews: PreviewProvider {
     static let listAnggotaModel : [AnggotaModel] = []
     static var previews: some View {
         //        DaftarAnggotaItem(name: "Achmad Rijalu", pembelian: 25000, simpanan: 20000)
-        DaftarAnggotaItem(daftarAnggotaItem: anggotaModelPreview, tambahAnggotaDataSaved: listAnggotaModel)
+        DaftarAnggotaItem(daftarAnggotaItem: .constant(anggotaModelPreview), tambahAnggotaDataSaved:.constant(listAnggotaModel))
     }
 }

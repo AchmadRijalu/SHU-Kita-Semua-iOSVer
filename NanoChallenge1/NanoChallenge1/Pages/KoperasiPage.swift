@@ -12,17 +12,23 @@ struct KoperasiPage: View {
     @State private var editDataKoperasishowSheet:Bool = false
     @State private var tambahAnggotaShowSheet:Bool = false
     @State var koperasiData = KoperasiModel(SHUData: 250000, jasaModal: 20, jasaAnggota: 25)
-    @State var koperasiDataSaved : KoperasiModel = UserDefaults.standard.retrieveCodable(for: "koperasiUserDefaultKey") ?? KoperasiModel(SHUData: 250000, jasaModal: 20, jasaAnggota: 25)
-    
     private var tambahAnggota:AnggotaModel?
-    
-//    @State var tambahAnggotaDataSaved : [AnggotaModel] = UserDefaults.standard.retrieveCodable(for: "anggotaUserDefaultKey") ?? []
-//
-    //tambah anggota
-    @EnvironmentObject var anggotaListTambah:AnggotaList
+    @EnvironmentObject var koperasiSharedData:KoperasiSharedData
+    @State var anggotaListObs:[AnggotaModel]?
     
     
+    static let currencyFormatter: NumberFormatter = {
+            let formatter = NumberFormatter()
+            formatter.locale = Locale(identifier: "id_ID")
+            formatter.numberStyle = .currency
+            formatter.currencySymbol = "Rp "
+            return formatter
+        }()
+    
+
+
     var body: some View {
+        
         GeometryReader{reader in
             NavigationStack{
                 ScrollView{
@@ -39,7 +45,7 @@ struct KoperasiPage: View {
                                 Button(action: { self.editDataKoperasishowSheet.toggle()}) {
                                     Text("Ubah").fontWeight(.bold)
                                 }.sheet(isPresented: $editDataKoperasishowSheet,  content: {
-                                    UbahKoperasiSheet(koperasiData: $koperasiDataSaved, updateKoperasiSaveData: $koperasiDataSaved)
+                                    UbahKoperasiSheet(koperasiData: $koperasiSharedData.koperasiDataSaved, updateKoperasiSaveData: $koperasiSharedData.koperasiDataSaved)
                                 })
                                 .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                                 .foregroundColor(.white)
@@ -47,8 +53,10 @@ struct KoperasiPage: View {
                             }
                             HStack{
                                 //VALUE OF SHU Koperasi
-                                Text(koperasiDataSaved.SHUData.description ).font(.title2).fontWeight(.bold)
+                                Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 koperasiSharedData.koperasiDataSaved.SHUData)) ?? "")").font(.title2).fontWeight(.bold)
                                 Spacer()
+                                
+                                
                             }
                             
                             HStack{
@@ -56,7 +64,7 @@ struct KoperasiPage: View {
                                 VStack{
                                     Text("Jasa Modal").fontWeight(.medium)
                                     
-                                    Text("\(String(koperasiDataSaved.jasaModal.description )) %").fontWeight(.semibold).padding(.top, 16)
+                                    Text("\(String(format: "%.0f",koperasiSharedData.koperasiDataSaved.jasaModal )) %").fontWeight(.semibold).padding(.top, 16)
                                 }
                                 Spacer()
                                 Divider()
@@ -66,7 +74,7 @@ struct KoperasiPage: View {
                                 VStack{
                                     Text("Jasa Anggota").fontWeight(.medium)
                                     
-                                    Text("\(String(koperasiDataSaved.jasaAnggota.description )) %").fontWeight(.semibold).padding(.top, 16)
+                                    Text("\(String(format: "%.0f", koperasiSharedData.koperasiDataSaved.jasaAnggota )) %").fontWeight(.semibold).padding(.top, 16)
                                 }
                             }
                             
@@ -82,15 +90,15 @@ struct KoperasiPage: View {
                                 
                             }).sheet(isPresented: $tambahAnggotaShowSheet,  content: {
                                 
-                                TambahAnggotaSheet(tambahAnggotaSaveData: $anggotaListTambah.tambahAnggotaDataSaved)
+                                TambahAnggotaSheet(tambahAnggotaSaveData: $koperasiSharedData.tambahAnggotaDataSaved)
                                 
                             }).padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .foregroundColor(.white)
                                 .background(Color("PrimaryColor")).cornerRadius(30)
                         }.padding(.top, 21).padding(.bottom, 12)
-                        ForEach(anggotaListTambah.tambahAnggotaDataSaved, id: \.id) { anggotaItem in
-                            //                            DaftarAnggotaItem(name: anggotaItem.name, pembelian: anggotaItem.pembelian, simpanan: anggotaItem.simpanan)
-                            DaftarAnggotaItem(daftarAnggotaItem: anggotaItem, tambahAnggotaDataSaved: anggotaListTambah.tambahAnggotaDataSaved)
+                        
+                        ForEach($koperasiSharedData.tambahAnggotaDataSaved, id: \.id) { $anggotaItem in
+                            DaftarAnggotaItem(daftarAnggotaItem: $anggotaItem, tambahAnggotaDataSaved: $koperasiSharedData.tambahAnggotaDataSaved)
                         }
                         
                     }.padding([.leading, .trailing], 20)
@@ -167,7 +175,7 @@ struct TambahAnggotaSheet: View {
     
     @Environment(\.dismiss) var dismiss
     //    @StateObject var anggotaListTambah = AnggotaList()
-    @EnvironmentObject var anggotaListTambah:AnggotaList
+    @EnvironmentObject var anggotaListTambah:KoperasiSharedData
     @Binding var tambahAnggotaSaveData:[AnggotaModel]
     @State private var name = ""
     @State private var pembelian = ""
@@ -206,14 +214,14 @@ struct TambahAnggotaSheet: View {
                     }).foregroundColor(Color("PrimaryColor")))
                     .navigationBarItems(trailing: Button("Tambah",
                                                          action: {
-                        var createNewAnggota = AnggotaModel(name: name, pembelian: Double(pembelian) ?? 0, simpanan: Double(simpanan) ?? 0)
+                        let createNewAnggota = AnggotaModel(name: name, pembelian: Double(pembelian) ?? 0, simpanan: Double(simpanan) ?? 0)
                         
                         tambahAnggotaSaveData.append(createNewAnggota)
                         //                        anggotaListTambah.anggotaList.append(createNewAnggota)
                         
                         UserDefaults.standard.storeCodable(tambahAnggotaSaveData, key: "anggotaUserDefaultKey")
                         
-                        print(tambahAnggotaSaveData)
+                      
                         
                         dismiss()
                         
@@ -230,7 +238,7 @@ struct TambahAnggotaSheet: View {
     }
     
     struct KoperasiPage_Previews: PreviewProvider {
-        static let myEnvObject = AnggotaList()
+        static let myEnvObject = KoperasiSharedData()
         static var previews: some View {
             KoperasiPage( ).environmentObject(myEnvObject)
         }

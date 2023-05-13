@@ -9,44 +9,58 @@ import SwiftUI
 
 struct SHUAnggotaPage: View {
     @State private var searchText = ""
-    @State var anggotaListDataSaved : [AnggotaModel] = UserDefaults.standard.retrieveCodable(for: "anggotaUserDefaultKey") ?? []
+    
     @State var getSHUModel:[SHUModel]?
+    @State  var getAnggotData = AnggotaModel(name: "", pembelian: 0, simpanan: 0)
+    @EnvironmentObject var koperasiSharedData:KoperasiSharedData
+    @State var shuListData:[SHUModel]?
+    @State var totalSimpanan:Double = 0
+    @State var totalPembelian:Double = 0
+    @State var totalSHU:Double = 0
+    @State var count:Int = 0
     
 
-    @State  var getAnggotData = AnggotaModel(name: "", pembelian: 0, simpanan: 0)
-    
     var body: some View {
-//        var setSHUData:SHUModel {
-//          var  shuData = SHUModel(name: "", SHU: 0)
-//
-//        }
+        @State var koperasiData:KoperasiModel = koperasiSharedData.koperasiDataSaved
+        @State var a:[AnggotaModel] = koperasiSharedData.tambahAnggotaDataSaved
         GeometryReader{reader in
             NavigationStack{
                 ScrollView{
                     VStack{
+                        ForEach($koperasiSharedData.tambahAnggotaDataSaved, id: \.id) { $anggotaItem in
 
-                        ForEach(anggotaListDataSaved, id: \.id) { anggota in
-                            //declare the object of each anggota
+                           
+                            @State var totalSHU:Double = ((anggotaItem.simpanan / totalSimpanan) * (koperasiData.jasaModal/100) * koperasiData.SHUData ) + (((anggotaItem.pembelian / totalPembelian) * (koperasiData.jasaAnggota/100) * koperasiData.SHUData ))
 
-                            //hitung jasa modal
-                          var jasaModal:Double = (getAnggotData.pembelian + getAnggotData.simpanan)
-                            
-                            Text(anggotaListDataSaved[2].pembelian.description)
-                            
-                                    }
-                    }.padding([.leading, .trailing], 20)
+                            SHUAnggotaItem(koperasiItem: $koperasiData, anggotaItem: $anggotaItem, totalSimpanan: $totalSimpanan, totalPinjaman: $totalPembelian, totalSHU: $totalSHU)
+                        }.padding([.leading, .trailing], 20)
+                    }                    .navigationTitle("SHU Anggota")
+                    
+                }.searchable(text: $searchText)
+            }.onAppear(){
+                if count == koperasiSharedData.tambahAnggotaDataSaved.count{
+                    print("cukup di \(count)")
                 }
-                .navigationTitle("SHU Anggota")
+                else{
+                    for i in 0..<koperasiSharedData.tambahAnggotaDataSaved.count {
+                        count += 1
+                        let data:AnggotaModel = koperasiSharedData.tambahAnggotaDataSaved[i]
+                        totalSimpanan += data.simpanan
+                        totalPembelian += data.pembelian
+
+                    }
+                }
                 
-            }.searchable(text: $searchText)
+            }
+            .environmentObject(koperasiSharedData)
         }
     }
-}
-
-struct SHUAnggotaPage_Previews: PreviewProvider {
     
-    static var getSHUModel: [SHUModel] = []
-    static var previews: some View {
-        SHUAnggotaPage(getSHUModel: getSHUModel)
+    struct SHUAnggotaPage_Previews: PreviewProvider {
+        
+        static var getSHUModel: [SHUModel] = []
+        static var previews: some View {
+            SHUAnggotaPage(getSHUModel: getSHUModel).environmentObject(KoperasiSharedData())
+        }
     }
 }

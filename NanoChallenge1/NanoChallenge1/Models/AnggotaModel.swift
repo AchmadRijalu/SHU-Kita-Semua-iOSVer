@@ -9,7 +9,7 @@ import Foundation
 
 
 struct AnggotaModel:Hashable, Codable, Identifiable{
-    let id = UUID()
+    var id = UUID()
     var name:String
     var pembelian:Double
     var simpanan:Double
@@ -17,14 +17,8 @@ struct AnggotaModel:Hashable, Codable, Identifiable{
 
 
 
-class AnggotaList: ObservableObject {
-    
+class KoperasiSharedData: ObservableObject {
     @Published var tambahAnggotaDataSaved : [AnggotaModel] = UserDefaults.standard.retrieveCodable(for: "anggotaUserDefaultKey") ?? []
-    
-    @Published var anggotaList:[AnggotaModel] =  [
-        AnggotaModel(name: "Achmad Rijalu", pembelian: 25000, simpanan: 30000)
-        ,
-        AnggotaModel(name: "Arya Suta", pembelian: 3000, simpanan: 30000)
-        
-    ]
+    @Published var anggotaDataSaved:AnggotaModel?
+    @Published var koperasiDataSaved : KoperasiModel = UserDefaults.standard.retrieveCodable(for: "koperasiUserDefaultKey") ?? KoperasiModel(SHUData: 250000, jasaModal: 20, jasaAnggota: 25)
 }

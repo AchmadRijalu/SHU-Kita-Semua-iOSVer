@@ -8,7 +8,7 @@
 import Foundation
 
 struct KoperasiModel:Identifiable,Codable,Hashable{
-    let id = UUID()
+    var id = UUID()
     var SHUData:Double
     var jasaModal:Double
     var jasaAnggota:Double

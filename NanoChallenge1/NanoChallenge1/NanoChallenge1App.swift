@@ -9,10 +9,11 @@ import SwiftUI
 
 @main
 struct NanoChallenge1App: App {
-    @StateObject var anggotaListTambah = AnggotaList()
+    @StateObject var anggotaListTambah = KoperasiSharedData()
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(anggotaListTambah)
+            ContentView()
+                .environmentObject(anggotaListTambah)
         }
     }
 }
