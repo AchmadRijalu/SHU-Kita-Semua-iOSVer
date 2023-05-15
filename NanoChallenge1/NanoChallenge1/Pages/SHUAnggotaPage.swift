@@ -28,6 +28,8 @@ struct SHUAnggotaPage: View {
         guard !returnTestArray.isEmpty else { return koperasiSharedData.tambahAnggotaDataSaved }
         return returnTestArray
     }
+    
+    
     var body: some View {
         
         GeometryReader{reader in

@@ -32,13 +32,13 @@ struct DaftarAnggotaItem: View {
 
                 
                 VStack(alignment: .leading){
-                    Text(daftarAnggotaItem.name).fontWeight(.bold).padding(.bottom, 1)
+                    Text(daftarAnggotaItem.name).font(.title3).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
-                        Text("Pembelian :").fontWeight(.medium)
+                        Text("Pembelian :").font(.subheadline).fontWeight(.medium)
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.pembelian)) ?? "")")
                     }
                     HStack{
-                        Text("Simpanan :").fontWeight(.medium)
+                        Text("Simpanan :").font(.subheadline).fontWeight(.medium)
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.simpanan)) ?? "")")
                     }
                 }.padding(.leading, 8)

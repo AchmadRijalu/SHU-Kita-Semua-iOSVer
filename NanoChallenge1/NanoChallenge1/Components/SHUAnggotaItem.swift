@@ -33,12 +33,12 @@ struct SHUAnggotaItem: View {
                 VStack(alignment: .leading){
                     Text("\(anggotaItem.name)").font(.title3).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
-                        Text("Sisa Hasil Usaha :").fontWeight(.semibold)
-                        Text("\(Self.currencyFormatter.string(from: NSNumber(value: totalSHU)) ?? "")").fontWeight(.medium)
+                        Text("Sisa Hasil Usaha :").font(.subheadline).fontWeight(.semibold)
+                        Text("\(Self.currencyFormatter.string(from: NSNumber(value: totalSHU)) ?? "")").font(.subheadline).fontWeight(.medium)
                     }
                     
                 }.padding(.leading, 8)
-                
+                Spacer()
                 
             }
         }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("GrayColor")).cornerRadius(12).foregroundColor(.black).padding(.bottom, 12).onAppear(){

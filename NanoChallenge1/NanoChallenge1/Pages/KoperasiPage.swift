@@ -24,9 +24,7 @@ struct KoperasiPage: View {
         formatter.currencySymbol = "Rp "
         return formatter
     }()
-    
-    
-    
+
     var body: some View {
         
         GeometryReader{reader in
@@ -106,10 +104,7 @@ struct KoperasiPage: View {
                         }
                         
                     }.padding([.leading, .trailing], 20).onAppear(){
-//                        koperasiSharedData.totalSimpanan = 0
-//                        koperasiSharedData.totalPembelian = 0
-//                        print(koperasiSharedData.totalSimpanan)
-//                        print(koperasiSharedData.tot)
+
                     }
                     
                 }
@@ -129,6 +124,8 @@ struct UbahKoperasiSheet: View {
     @EnvironmentObject var koperasiSharedData:KoperasiSharedData
     @Environment(\.presentationMode) var presentationMode
     
+    @FocusState var isFocused:Bool
+    
     var body: some View {
         NavigationStack{
             VStack{
@@ -136,13 +133,24 @@ struct UbahKoperasiSheet: View {
                     VStack(alignment: .leading){
                         Text("Total SHU Koperasi").font(.subheadline)
                         
-                        TextField( "Masukkan Total SHU", value: $koperasiData.SHUData, formatter: NumberFormatter())
+                        TextField( "Masukkan Total SHU", value: $koperasiData.SHUData, formatter: NumberFormatter()).keyboardType(.numberPad).focused($isFocused).toolbar{
+                            ToolbarItemGroup(placement: .keyboard){
+                                Spacer()
+                                Button("Done"){
+                                    isFocused = false
+                                }
+                            }
+                        }
                     }
                     
                     VStack(alignment: .leading){
                         Text("Jasa Modal").font(.subheadline)
                         HStack{
-                            TextField( "Masukkan Jasa Modal", value: $koperasiData.jasaModal, formatter: NumberFormatter())
+                            TextField( "Masukkan Jasa Modal", value: $koperasiData.jasaModal, formatter: NumberFormatter()).keyboardType(.numberPad).focused($isFocused).toolbar{
+                                ToolbarItemGroup(placement: .keyboard){
+                                    
+                                }
+                            }
                             Text("%").foregroundColor(.black).fontWeight(.semibold)
                         }
                         
@@ -151,7 +159,10 @@ struct UbahKoperasiSheet: View {
                     VStack(alignment: .leading){
                         Text("Jasa Anggota").font(.subheadline)
                         HStack{
-                            TextField( "Masukkan Jasa Anggota", value: $koperasiData.jasaAnggota, formatter: NumberFormatter())
+                            TextField( "Masukkan Jasa Anggota", value: $koperasiData.jasaAnggota, formatter: NumberFormatter()).keyboardType(.numberPad).focused($isFocused).toolbar{
+                                ToolbarItemGroup(placement: .keyboard){
+                                }
+                            }
                             Text("%").foregroundColor(.black).fontWeight(.semibold)
                         }
                         
@@ -192,6 +203,8 @@ struct TambahAnggotaSheet: View {
     @State private var name = ""
     @State private var pembelian = ""
     @State private var simpanan = ""
+    
+    @FocusState var isFocused:Bool
     var body: some View {
         
         NavigationStack{
