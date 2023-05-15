@@ -18,15 +18,15 @@ struct KoperasiPage: View {
     
     
     static let currencyFormatter: NumberFormatter = {
-            let formatter = NumberFormatter()
-            formatter.locale = Locale(identifier: "id_ID")
-            formatter.numberStyle = .currency
-            formatter.currencySymbol = "Rp "
-            return formatter
-        }()
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "id_ID")
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = "Rp "
+        return formatter
+    }()
     
-
-
+    
+    
     var body: some View {
         
         GeometryReader{reader in
@@ -88,7 +88,11 @@ struct KoperasiPage: View {
                             Button(action:{self.tambahAnggotaShowSheet.toggle()} , label:{
                                 Image(systemName: "plus")
                                 
-                            }).sheet(isPresented: $tambahAnggotaShowSheet,  content: {
+                            }).sheet(isPresented: $tambahAnggotaShowSheet,onDismiss: {
+                                
+                                // perform your action here
+   
+                            },  content: {
                                 
                                 TambahAnggotaSheet(tambahAnggotaSaveData: $koperasiSharedData.tambahAnggotaDataSaved)
                                 
@@ -101,7 +105,13 @@ struct KoperasiPage: View {
                             DaftarAnggotaItem(daftarAnggotaItem: $anggotaItem, tambahAnggotaDataSaved: $koperasiSharedData.tambahAnggotaDataSaved)
                         }
                         
-                    }.padding([.leading, .trailing], 20)
+                    }.padding([.leading, .trailing], 20).onAppear(){
+//                        koperasiSharedData.totalSimpanan = 0
+//                        koperasiSharedData.totalPembelian = 0
+//                        print(koperasiSharedData.totalSimpanan)
+//                        print(koperasiSharedData.tot)
+                    }
+                    
                 }
                 
                 .navigationTitle("Koperasi")
@@ -116,7 +126,7 @@ struct UbahKoperasiSheet: View {
     
     @Binding var koperasiData:KoperasiModel
     @Binding var updateKoperasiSaveData:KoperasiModel
-    
+    @EnvironmentObject var koperasiSharedData:KoperasiSharedData
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -126,13 +136,13 @@ struct UbahKoperasiSheet: View {
                     VStack(alignment: .leading){
                         Text("Total SHU Koperasi").font(.subheadline)
                         
-                        TextField( "Masukkan Total SHU", value: $koperasiData.SHUData, formatter: NumberFormatter()).keyboardType(.numberPad)
+                        TextField( "Masukkan Total SHU", value: $koperasiData.SHUData, formatter: NumberFormatter())
                     }
                     
                     VStack(alignment: .leading){
                         Text("Jasa Modal").font(.subheadline)
                         HStack{
-                            TextField( "Masukkan Jasa Modal", value: $koperasiData.jasaModal, formatter: NumberFormatter()).keyboardType(.numberPad).submitLabel(.done)
+                            TextField( "Masukkan Jasa Modal", value: $koperasiData.jasaModal, formatter: NumberFormatter())
                             Text("%").foregroundColor(.black).fontWeight(.semibold)
                         }
                         
@@ -141,7 +151,7 @@ struct UbahKoperasiSheet: View {
                     VStack(alignment: .leading){
                         Text("Jasa Anggota").font(.subheadline)
                         HStack{
-                            TextField( "Masukkan Jasa Anggota", value: $koperasiData.jasaAnggota, formatter: NumberFormatter()).keyboardType(.numberPad)
+                            TextField( "Masukkan Jasa Anggota", value: $koperasiData.jasaAnggota, formatter: NumberFormatter())
                             Text("%").foregroundColor(.black).fontWeight(.semibold)
                         }
                         
@@ -164,6 +174,8 @@ struct UbahKoperasiSheet: View {
                     //save to local user default
                     UserDefaults.standard.storeCodable(updateKoperasiSaveData, key: "koperasiUserDefaultKey")
                     
+                    koperasiSharedData.count = false
+                    print("edit jadi : \(koperasiSharedData.count)")
                     
                     presentationMode.wrappedValue.dismiss()
                 }).foregroundColor(Color("PrimaryColor")) )
@@ -188,7 +200,7 @@ struct TambahAnggotaSheet: View {
                     VStack(alignment: .leading){
                         Text("Nama Anggota").font(.subheadline)
                         
-                        TextField( "Masukkan Nama", text: $name).submitLabel(.done)
+                        TextField( "Masukkan Nama", text: $name)
                     }
                     VStack(alignment: .leading){
                         Text("Pembelian").font(.subheadline)
@@ -221,15 +233,16 @@ struct TambahAnggotaSheet: View {
                         
                         UserDefaults.standard.storeCodable(tambahAnggotaSaveData, key: "anggotaUserDefaultKey")
                         
-                      
+                        anggotaListTambah.count = false
+                        print("edit jadi : \(anggotaListTambah.count)")
                         
+
                         dismiss()
                         
                     }).disabled(name.isEmpty || pembelian.isEmpty || simpanan.isEmpty).foregroundColor(
                         name.isEmpty || pembelian.isEmpty || simpanan.isEmpty ?
                             .gray: Color("PrimaryColor")))
             }
-            
             .navigationTitle("Edit Koperasi").navigationBarTitleDisplayMode(.inline)
             
             

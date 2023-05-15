@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-
-
 struct DaftarAnggotaItem: View {
     
     @State private var editDataAnggotaShowSheet:Bool = false
     
     @Binding var daftarAnggotaItem:AnggotaModel
     @Binding var tambahAnggotaDataSaved : [AnggotaModel]
+    
+    
     static let currencyFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "id_ID")
@@ -22,14 +22,17 @@ struct DaftarAnggotaItem: View {
         formatter.currencySymbol = "Rp "
         return formatter
     }()
-
+    
+    
+    
     var body: some View {
         
         VStack{
             HStack{
 
+                
                 VStack(alignment: .leading){
-                    Text(daftarAnggotaItem.name).font(.title3).fontWeight(.bold).padding(.bottom, 1)
+                    Text(daftarAnggotaItem.name).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
                         Text("Pembelian :").fontWeight(.medium)
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.pembelian)) ?? "")")
@@ -49,11 +52,9 @@ struct DaftarAnggotaItem: View {
                 .foregroundColor(.white)
                 .background(Color("PrimaryColor")).cornerRadius(30)
             }
-        }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("GrayColor")).cornerRadius(12).padding(.bottom, 12).shadow(color: Color("PrimaryColor"), radius: 2, x: 1, y: 3)
+        }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("GrayColor")).cornerRadius(12).padding(.bottom, 12)
     }
 }
-
-
 
 
 struct UbahAnggotaSheet: View {
@@ -61,7 +62,9 @@ struct UbahAnggotaSheet: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var ubahAnggotaData:AnggotaModel //a
     @Binding var tambahAnggotaDataSaved: [AnggotaModel]
-    @State private var formattedValue: String = ""
+    
+    @EnvironmentObject var koperasiSharedData:KoperasiSharedData
+    @State private var showAlert = false
     var body: some View {
         
         NavigationStack{
@@ -70,23 +73,52 @@ struct UbahAnggotaSheet: View {
                     VStack(alignment: .leading){
                         Text("Nama Anggota").font(.subheadline)
                         
-                        TextField( "Masukkan Nama", text: $ubahAnggotaData.name).submitLabel(.done)
+                        TextField( "Masukkan Nama", text: $ubahAnggotaData.name)
                     }
                     VStack(alignment: .leading){
                         Text("Pembelian").font(.subheadline)
                         HStack{
-                            TextField("Ubah Pembelian", value: $ubahAnggotaData.pembelian, formatter: NumberFormatter())
+                            TextField("Ubah Pembelian", value: $ubahAnggotaData.pembelian, formatter: NumberFormatter()).keyboardType(.numberPad)
                             
                         }.padding(.top, 8)
                         VStack(alignment: .leading){
                             Text("Simpanan").font(.subheadline)
                             HStack{
-                                TextField( "Ubah Simpanan", value: $ubahAnggotaData.simpanan, formatter: NumberFormatter() ).keyboardType(.numberPad).submitLabel(.done)
+                                TextField( "Ubah Simpanan", value: $ubahAnggotaData.simpanan, formatter: NumberFormatter() ).keyboardType(.numberPad)
                             }
                         }.padding(.top, 8)
                         
                     }
+                    
                 }
+                Button(action: {
+                    showAlert = true
+                }) {
+                    Image(systemName: "trash").foregroundColor(.red)
+                    Text("Hapus")
+                        .foregroundColor(.red)
+                }
+                .accessibility(label: Text("Delete")).alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Apakah Anda yakin untuk menghapus anggota ini?"),
+                        message: Text("Data tidak dapat dikembalikan"),
+                        primaryButton: .destructive(Text("Delete")) {
+                            // Code to delete the item
+                            if let index = tambahAnggotaDataSaved.firstIndex(where: {$0.id == ubahAnggotaData.id}) {
+                                tambahAnggotaDataSaved.remove(at: index)
+                                koperasiSharedData.count = false
+                                print("edit jadi : \(koperasiSharedData.count)")
+                            }
+                            //save to local user default
+                            UserDefaults.standard.storeCodable(tambahAnggotaDataSaved, key: "anggotaUserDefaultKey")
+                            
+                            
+                            
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+                Spacer()
             }.frame(maxWidth: .infinity, maxHeight: .infinity).foregroundColor(.black)
                 .background(Color.white)
                 .navigationTitle("Ubah Data Anggota")
@@ -94,7 +126,6 @@ struct UbahAnggotaSheet: View {
                                                     action: {
                     presentationMode.wrappedValue.dismiss()
                 }).foregroundColor(Color("PrimaryColor")))
-            
                 .navigationBarItems(trailing: Button("Ubah",
                                                      action: {
                     
@@ -104,11 +135,16 @@ struct UbahAnggotaSheet: View {
                     }
                     //save to local user default
                     UserDefaults.standard.storeCodable(tambahAnggotaDataSaved, key: "anggotaUserDefaultKey")
+                    koperasiSharedData.count = false
+                    print("edit jadi : \(koperasiSharedData.count)")
                     presentationMode.wrappedValue.dismiss()
                 }).foregroundColor(Color("PrimaryColor")) )
         }
         
         .navigationTitle("Edit Koperasi").navigationBarTitleDisplayMode(.inline)
+        
+        
+        
     }
 }
 

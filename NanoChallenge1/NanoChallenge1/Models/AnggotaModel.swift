@@ -19,6 +19,8 @@ struct AnggotaModel:Hashable, Codable, Identifiable{
 
 class KoperasiSharedData: ObservableObject {
     @Published var tambahAnggotaDataSaved : [AnggotaModel] = UserDefaults.standard.retrieveCodable(for: "anggotaUserDefaultKey") ?? []
-    @Published var anggotaDataSaved:AnggotaModel?
+    @Published var totalSimpanan:Double = 0
+    @Published var totalPembelian:Double = 0
+    @Published var count:Bool = false
     @Published var koperasiDataSaved : KoperasiModel = UserDefaults.standard.retrieveCodable(for: "koperasiUserDefaultKey") ?? KoperasiModel(SHUData: 250000, jasaModal: 20, jasaAnggota: 25)
 }

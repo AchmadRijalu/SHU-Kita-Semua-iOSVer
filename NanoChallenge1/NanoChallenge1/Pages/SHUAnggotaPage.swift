@@ -14,46 +14,59 @@ struct SHUAnggotaPage: View {
     @State  var getAnggotData = AnggotaModel(name: "", pembelian: 0, simpanan: 0)
     @EnvironmentObject var koperasiSharedData:KoperasiSharedData
     @State var shuListData:[SHUModel]?
-    @State var totalSimpanan:Double = 0
-    @State var totalPembelian:Double = 0
+    
     @State var totalSHU:Double = 0
     @State var count:Int = 0
+    @State private var isLooped = false
     
-
+    var filteredNameSHU: [AnggotaModel] {
+        // If you want to return no items when there is no matching filter use this:
+        koperasiSharedData.tambahAnggotaDataSaved.filter { ($0.name.lowercased().contains(searchText.lowercased()))}
+        
+        // If you want the whole array unless the filter matches use this:
+        let returnTestArray = koperasiSharedData.tambahAnggotaDataSaved.filter { ($0.name.lowercased().contains(searchText.lowercased()))}
+        guard !returnTestArray.isEmpty else { return koperasiSharedData.tambahAnggotaDataSaved }
+        return returnTestArray
+    }
     var body: some View {
-        @State var koperasiData:KoperasiModel = koperasiSharedData.koperasiDataSaved
-        @State var a:[AnggotaModel] = koperasiSharedData.tambahAnggotaDataSaved
-         
+        
         GeometryReader{reader in
             NavigationStack{
                 ScrollView{
                     VStack{
-                        ForEach($koperasiSharedData.tambahAnggotaDataSaved, id: \.id) { $anggotaItem in
-                            @State var totalSHU:Double = ((anggotaItem.simpanan / totalSimpanan) * (koperasiData.jasaModal/100) * koperasiData.SHUData ) + (((anggotaItem.pembelian / totalPembelian) * (koperasiData.jasaAnggota/100) * koperasiData.SHUData ))
-
-                            SHUAnggotaItem(koperasiItem: $koperasiData, anggotaItem: $anggotaItem, totalSimpanan: $totalSimpanan, totalPinjaman: $totalPembelian, totalSHU: $totalSHU)
+                        ForEach(filteredNameSHU, id: \.id) { anggotaItem in
+                            
+                            SHUAnggotaItem(anggotaItem: .constant(anggotaItem), totalSHU: totalSHU)
                         }.padding([.leading, .trailing], 20)
                     }                    .navigationTitle("SHU Anggota")
                     
-                }.searchable(text: $searchText)
+                }.searchable(text: $searchText, prompt: "Cari Anggota")
             }.onAppear(){
-                if count == koperasiSharedData.tambahAnggotaDataSaved.count{
-                    print("cukup di \(count)")
-                }
-                else{
-                    for i in 0..<koperasiSharedData.tambahAnggotaDataSaved.count {
-                        count += 1
-                        let data:AnggotaModel = koperasiSharedData.tambahAnggotaDataSaved[i]
-                        totalSimpanan += data.simpanan
-                        totalPembelian += data.pembelian
+                koperasiSharedData.count = false
+                koperasiSharedData.totalSimpanan = 0
+                koperasiSharedData.totalPembelian = 0
+                if !koperasiSharedData.count {
+                    for i in 0..<$koperasiSharedData.tambahAnggotaDataSaved.count {
+                    
+                        @State var data:AnggotaModel = koperasiSharedData.tambahAnggotaDataSaved[i]
+                        
+                        
+                        koperasiSharedData.totalSimpanan += data.simpanan
+                        koperasiSharedData.totalPembelian += data.pembelian
 
                     }
+                    
+                    koperasiSharedData.count = true
+                    
                 }
+                
                 
             }
             .environmentObject(koperasiSharedData)
         }
     }
+    
+    
     
     struct SHUAnggotaPage_Previews: PreviewProvider {
         
