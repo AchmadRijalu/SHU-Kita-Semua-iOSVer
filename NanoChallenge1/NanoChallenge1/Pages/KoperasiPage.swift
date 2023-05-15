@@ -126,13 +126,13 @@ struct UbahKoperasiSheet: View {
                     VStack(alignment: .leading){
                         Text("Total SHU Koperasi").font(.subheadline)
                         
-                        TextField( "Masukkan Total SHU", value: $koperasiData.SHUData, formatter: NumberFormatter())
+                        TextField( "Masukkan Total SHU", value: $koperasiData.SHUData, formatter: NumberFormatter()).keyboardType(.numberPad)
                     }
                     
                     VStack(alignment: .leading){
                         Text("Jasa Modal").font(.subheadline)
                         HStack{
-                            TextField( "Masukkan Jasa Modal", value: $koperasiData.jasaModal, formatter: NumberFormatter())
+                            TextField( "Masukkan Jasa Modal", value: $koperasiData.jasaModal, formatter: NumberFormatter()).keyboardType(.numberPad).submitLabel(.done)
                             Text("%").foregroundColor(.black).fontWeight(.semibold)
                         }
                         
@@ -141,7 +141,7 @@ struct UbahKoperasiSheet: View {
                     VStack(alignment: .leading){
                         Text("Jasa Anggota").font(.subheadline)
                         HStack{
-                            TextField( "Masukkan Jasa Anggota", value: $koperasiData.jasaAnggota, formatter: NumberFormatter())
+                            TextField( "Masukkan Jasa Anggota", value: $koperasiData.jasaAnggota, formatter: NumberFormatter()).keyboardType(.numberPad)
                             Text("%").foregroundColor(.black).fontWeight(.semibold)
                         }
                         
@@ -188,7 +188,7 @@ struct TambahAnggotaSheet: View {
                     VStack(alignment: .leading){
                         Text("Nama Anggota").font(.subheadline)
                         
-                        TextField( "Masukkan Nama", text: $name)
+                        TextField( "Masukkan Nama", text: $name).submitLabel(.done)
                     }
                     VStack(alignment: .leading){
                         Text("Pembelian").font(.subheadline)

@@ -35,25 +35,22 @@ struct SHUAnggotaItem: View {
         
         VStack{
             HStack{
-                VStack{
-                    Image(systemName: "banknote.fill")
-                }.padding(.all,9).frame(width: 36, height: 36).background(.white).cornerRadius(50).foregroundColor(.black)
-                
+               
                 VStack(alignment: .leading){
-                    Text("\(anggotaItem.name)").fontWeight(.bold).padding(.bottom, 1)
+                    Text("\(anggotaItem.name)").font(.title3).fontWeight(.bold).padding(.bottom, 1)
     
                     let formattedPrice = formatter.string(from: NSNumber(value: totalSHU))
                     
                     HStack{
-                        Text("Sisa Hasil Usaha :").fontWeight(.bold)
+                        Text("Sisa Hasil Usaha :").fontWeight(.semibold)
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value: totalSHU)) ?? "")").fontWeight(.medium)
                     }
                     
                 }.padding(.leading, 8)
                 
-                
+                Spacer()
             }
-        }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("PrimaryColor")).cornerRadius(12).foregroundColor(.white).padding(.bottom, 12).onAppear(){
+        }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("GrayColor")).cornerRadius(12).foregroundColor(.black).padding(.bottom, 12).onAppear(){
         
             formatter.locale = Locale(identifier: "id_ID")
             formatter.groupingSeparator = "."

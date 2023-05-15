@@ -23,13 +23,12 @@ struct SHUAnggotaPage: View {
     var body: some View {
         @State var koperasiData:KoperasiModel = koperasiSharedData.koperasiDataSaved
         @State var a:[AnggotaModel] = koperasiSharedData.tambahAnggotaDataSaved
+         
         GeometryReader{reader in
             NavigationStack{
                 ScrollView{
                     VStack{
                         ForEach($koperasiSharedData.tambahAnggotaDataSaved, id: \.id) { $anggotaItem in
-
-                           
                             @State var totalSHU:Double = ((anggotaItem.simpanan / totalSimpanan) * (koperasiData.jasaModal/100) * koperasiData.SHUData ) + (((anggotaItem.pembelian / totalPembelian) * (koperasiData.jasaAnggota/100) * koperasiData.SHUData ))
 
                             SHUAnggotaItem(koperasiItem: $koperasiData, anggotaItem: $anggotaItem, totalSimpanan: $totalSimpanan, totalPinjaman: $totalPembelian, totalSHU: $totalSHU)

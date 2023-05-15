@@ -7,14 +7,14 @@
 
 import SwiftUI
 
+
+
 struct DaftarAnggotaItem: View {
     
     @State private var editDataAnggotaShowSheet:Bool = false
     
     @Binding var daftarAnggotaItem:AnggotaModel
     @Binding var tambahAnggotaDataSaved : [AnggotaModel]
-    
-    
     static let currencyFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "id_ID")
@@ -22,19 +22,14 @@ struct DaftarAnggotaItem: View {
         formatter.currencySymbol = "Rp "
         return formatter
     }()
-    
-    
-    
+
     var body: some View {
         
         VStack{
             HStack{
-                //                VStack{
-                //                    //                    Image(systemName: "person.fill")
-                //                }.padding(.all,9).frame(width: 12, height: 12).background(.black).cornerRadius(50)
-                
+
                 VStack(alignment: .leading){
-                    Text(daftarAnggotaItem.name).fontWeight(.bold).padding(.bottom, 1)
+                    Text(daftarAnggotaItem.name).font(.title3).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
                         Text("Pembelian :").fontWeight(.medium)
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.pembelian)) ?? "")")
@@ -54,9 +49,11 @@ struct DaftarAnggotaItem: View {
                 .foregroundColor(.white)
                 .background(Color("PrimaryColor")).cornerRadius(30)
             }
-        }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("GrayColor")).cornerRadius(12).padding(.bottom, 12)
+        }.padding(EdgeInsets(top: 12, leading: 23, bottom: 12, trailing: 23)).frame(maxWidth: .infinity, maxHeight: 96).background(Color("GrayColor")).cornerRadius(12).padding(.bottom, 12).shadow(color: Color("PrimaryColor"), radius: 2, x: 1, y: 3)
     }
 }
+
+
 
 
 struct UbahAnggotaSheet: View {
@@ -64,6 +61,7 @@ struct UbahAnggotaSheet: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var ubahAnggotaData:AnggotaModel //a
     @Binding var tambahAnggotaDataSaved: [AnggotaModel]
+    @State private var formattedValue: String = ""
     var body: some View {
         
         NavigationStack{
@@ -72,18 +70,18 @@ struct UbahAnggotaSheet: View {
                     VStack(alignment: .leading){
                         Text("Nama Anggota").font(.subheadline)
                         
-                        TextField( "Masukkan Nama", text: $ubahAnggotaData.name)
+                        TextField( "Masukkan Nama", text: $ubahAnggotaData.name).submitLabel(.done)
                     }
                     VStack(alignment: .leading){
                         Text("Pembelian").font(.subheadline)
                         HStack{
-                            TextField("Ubah Pembelian", value: $ubahAnggotaData.pembelian, formatter: NumberFormatter()).keyboardType(.numberPad)
+                            TextField("Ubah Pembelian", value: $ubahAnggotaData.pembelian, formatter: NumberFormatter())
                             
                         }.padding(.top, 8)
                         VStack(alignment: .leading){
                             Text("Simpanan").font(.subheadline)
                             HStack{
-                                TextField( "Ubah Simpanan", value: $ubahAnggotaData.simpanan, formatter: NumberFormatter() ).keyboardType(.numberPad)
+                                TextField( "Ubah Simpanan", value: $ubahAnggotaData.simpanan, formatter: NumberFormatter() ).keyboardType(.numberPad).submitLabel(.done)
                             }
                         }.padding(.top, 8)
                         
@@ -96,6 +94,7 @@ struct UbahAnggotaSheet: View {
                                                     action: {
                     presentationMode.wrappedValue.dismiss()
                 }).foregroundColor(Color("PrimaryColor")))
+            
                 .navigationBarItems(trailing: Button("Ubah",
                                                      action: {
                     
@@ -110,9 +109,6 @@ struct UbahAnggotaSheet: View {
         }
         
         .navigationTitle("Edit Koperasi").navigationBarTitleDisplayMode(.inline)
-        
-        
-        
     }
 }
 
