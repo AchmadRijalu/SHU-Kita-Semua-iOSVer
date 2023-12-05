@@ -15,6 +15,7 @@
 		779D9AEA2A07FC8C00261E55 /* AnggotaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779D9AE92A07FC8C00261E55 /* AnggotaModel.swift */; };
 		779D9AEC2A07FC9C00261E55 /* KoperasiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779D9AEB2A07FC9C00261E55 /* KoperasiModel.swift */; };
 		779D9AEE2A07FD1C00261E55 /* SHUModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779D9AED2A07FD1C00261E55 /* SHUModel.swift */; };
+		77BC81202A13D2B500C9A91F /* SplashPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC811F2A13D2B500C9A91F /* SplashPage.swift */; };
 		77F5BF6C2A048ED600F2A617 /* KoperasiPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F5BF6B2A048ED600F2A617 /* KoperasiPage.swift */; };
 		77F5BF702A04949400F2A617 /* SHUAnggotaPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F5BF6F2A04949400F2A617 /* SHUAnggotaPage.swift */; };
 		77F5BF742A05302E00F2A617 /* DaftarAnggotaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F5BF732A05302E00F2A617 /* DaftarAnggotaItem.swift */; };
@@ -30,6 +31,7 @@
 		779D9AE92A07FC8C00261E55 /* AnggotaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnggotaModel.swift; sourceTree = "<group>"; };
 		779D9AEB2A07FC9C00261E55 /* KoperasiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoperasiModel.swift; sourceTree = "<group>"; };
 		779D9AED2A07FD1C00261E55 /* SHUModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHUModel.swift; sourceTree = "<group>"; };
+		77BC811F2A13D2B500C9A91F /* SplashPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPage.swift; sourceTree = "<group>"; };
 		77F5BF6B2A048ED600F2A617 /* KoperasiPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoperasiPage.swift; sourceTree = "<group>"; };
 		77F5BF6F2A04949400F2A617 /* SHUAnggotaPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHUAnggotaPage.swift; sourceTree = "<group>"; };
 		77F5BF732A05302E00F2A617 /* DaftarAnggotaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaftarAnggotaItem.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				77F5BF6B2A048ED600F2A617 /* KoperasiPage.swift */,
 				77F5BF6F2A04949400F2A617 /* SHUAnggotaPage.swift */,
+				77BC811F2A13D2B500C9A91F /* SplashPage.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				77F5BF6C2A048ED600F2A617 /* KoperasiPage.swift in Sources */,
 				77F5BF702A04949400F2A617 /* SHUAnggotaPage.swift in Sources */,
 				779D9AEA2A07FC8C00261E55 /* AnggotaModel.swift in Sources */,
+				77BC81202A13D2B500C9A91F /* SplashPage.swift in Sources */,
 				77F5BF742A05302E00F2A617 /* DaftarAnggotaItem.swift in Sources */,
 				779D9AE82A07EE6100261E55 /* SHUAnggotaItem.swift in Sources */,
 				779D9AEC2A07FC9C00261E55 /* KoperasiModel.swift in Sources */,
@@ -322,6 +326,8 @@
 				DEVELOPMENT_TEAM = DYXBWDG6F4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Cooca;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -351,6 +357,8 @@
 				DEVELOPMENT_TEAM = DYXBWDG6F4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Cooca;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

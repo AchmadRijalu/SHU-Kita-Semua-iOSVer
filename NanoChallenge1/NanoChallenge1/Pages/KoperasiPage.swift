@@ -62,7 +62,7 @@ struct KoperasiPage: View {
                                 VStack{
                                     Text("Jasa Modal").fontWeight(.medium)
                                     
-                                    Text("\(String(format: "%.0f",koperasiSharedData.koperasiDataSaved.jasaModal )) %").fontWeight(.semibold).padding(.top, 16)
+                                    Text("\(String(format: "%.0f",koperasiSharedData.koperasiDataSaved.jasaModal )) %").font(.title3).fontWeight(.semibold).padding(.top, 16)
                                 }
                                 Spacer()
                                 Divider()
@@ -72,7 +72,7 @@ struct KoperasiPage: View {
                                 VStack{
                                     Text("Jasa Anggota").fontWeight(.medium)
                                     
-                                    Text("\(String(format: "%.0f", koperasiSharedData.koperasiDataSaved.jasaAnggota )) %").fontWeight(.semibold).padding(.top, 16)
+                                    Text("\(String(format: "%.0f", koperasiSharedData.koperasiDataSaved.jasaAnggota )) %").font(.title3).fontWeight(.semibold).padding(.top, 16)
                                 }
                             }
                             
@@ -122,6 +122,7 @@ struct UbahKoperasiSheet: View {
     @Binding var koperasiData:KoperasiModel
     @Binding var updateKoperasiSaveData:KoperasiModel
     @EnvironmentObject var koperasiSharedData:KoperasiSharedData
+    
     @Environment(\.presentationMode) var presentationMode
     
     @FocusState var isFocused:Bool

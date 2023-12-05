@@ -12,7 +12,7 @@ struct NanoChallenge1App: App {
     @StateObject var anggotaListTambah = KoperasiSharedData()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashPage()
                 .environmentObject(anggotaListTambah)
         }
     }

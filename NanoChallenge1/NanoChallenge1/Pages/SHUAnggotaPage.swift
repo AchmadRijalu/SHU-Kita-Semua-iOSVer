@@ -31,7 +31,6 @@ struct SHUAnggotaPage: View {
     
     
     var body: some View {
-        
         GeometryReader{reader in
             NavigationStack{
                 ScrollView{
@@ -40,22 +39,25 @@ struct SHUAnggotaPage: View {
                             
                             SHUAnggotaItem(anggotaItem: .constant(anggotaItem), totalSHU: totalSHU)
                         }.padding([.leading, .trailing], 20)
-                    }                    .navigationTitle("SHU Anggota")
+                    }
+                    .navigationTitle("SHU Anggota")
                     
                 }.searchable(text: $searchText, prompt: "Cari Anggota")
             }.onAppear(){
                 koperasiSharedData.count = false
                 koperasiSharedData.totalSimpanan = 0
                 koperasiSharedData.totalPembelian = 0
+                
+                
                 if !koperasiSharedData.count {
                     for i in 0..<$koperasiSharedData.tambahAnggotaDataSaved.count {
-                    
+                        
                         @State var data:AnggotaModel = koperasiSharedData.tambahAnggotaDataSaved[i]
                         
                         
                         koperasiSharedData.totalSimpanan += data.simpanan
                         koperasiSharedData.totalPembelian += data.pembelian
-
+                        
                     }
                     
                     koperasiSharedData.count = true

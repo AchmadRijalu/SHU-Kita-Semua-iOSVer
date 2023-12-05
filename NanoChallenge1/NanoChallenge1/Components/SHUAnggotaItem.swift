@@ -33,7 +33,7 @@ struct SHUAnggotaItem: View {
                 VStack(alignment: .leading){
                     Text("\(anggotaItem.name)").font(.title3).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
-                        Text("Sisa Hasil Usaha :").font(.subheadline).fontWeight(.semibold)
+                        Text("Sisa Hasil Usaha :").font(.subheadline).fontWeight(.medium)
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value: totalSHU)) ?? "")").font(.subheadline).fontWeight(.medium)
                     }
                     

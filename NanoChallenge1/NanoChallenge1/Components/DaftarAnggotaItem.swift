@@ -35,14 +35,16 @@ struct DaftarAnggotaItem: View {
                     Text(daftarAnggotaItem.name).font(.title3).fontWeight(.bold).padding(.bottom, 1)
                     HStack{
                         Text("Pembelian :").font(.subheadline).fontWeight(.medium)
+                        Spacer()
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.pembelian)) ?? "")")
                     }
                     HStack{
                         Text("Simpanan :").font(.subheadline).fontWeight(.medium)
+                        Spacer()
                         Text("\(Self.currencyFormatter.string(from: NSNumber(value:                                 daftarAnggotaItem.simpanan)) ?? "")")
                     }
                 }.padding(.leading, 8)
-                Spacer()
+                Spacer(minLength: 20)
                 Button(action: {self.editDataAnggotaShowSheet.toggle()}) {
                     Text("Ubah").fontWeight(.bold)
                 }.sheet(isPresented: $editDataAnggotaShowSheet,  content: {
